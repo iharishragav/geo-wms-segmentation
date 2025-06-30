@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geospatial Semantic Segmentation</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <h1>Geospatial Semantic Segmentation</h1>
+    <div id="map"></div>
+    <button id="segment-btn">Run Segmentation</button>
+    <div id="results">
+        <div id="original-image">
+            <h2>Original Image</h2>
+            <img id="original-img" src="" alt="Original WMS Image">
+        </div>
+        <div id="segmented-image">
+            <h2>Segmented Image</h2>
+            <img id="segmented-img" src="" alt="Segmented Image">
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="/static/js/script.js"></script>
+</body>
+</html>
