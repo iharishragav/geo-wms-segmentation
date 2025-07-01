@@ -15,35 +15,41 @@ def index():
 
 @app.route('/segment', methods=['POST'])
 def segment_image():
-    data = request.json
-    bbox = data.get('bbox')
+    try:
+        data = request.json
+        bbox = data.get('bbox')
 
-    # Fetch the WMS image
-    wms_url = f"https://ows.terrestris.de/osm/service?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=OSM-WMS&SRS=EPSG:4326&BBOX={bbox}&WIDTH=512&HEIGHT=512&STYLES=default&FORMAT=image/png&TRANSPARENT=TRUE"
-    response = requests.get(wms_url)
+        # Fetch the WMS image
+        wms_url = f"https://ows.terrestris.de/osm/service?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=OSM-WMS&SRS=EPSG:4326&BBOX={bbox}&WIDTH=512&HEIGHT=512&STYLES=default&FORMAT=image/png&TRANSPARENT=TRUE"
+        response = requests.get(wms_url)
+        response.raise_for_status()  # Raise an exception for bad status codes
 
-    # Save the original image
-    original_image_path = os.path.join('static', 'output', 'original.png')
-    with open(original_image_path, 'wb') as f:
-        f.write(response.content)
+        # Save the original image
+        output_dir = os.path.join('static', 'output')
+        os.makedirs(output_dir, exist_ok=True)
+        original_image_path = os.path.join(output_dir, 'original.png')
+        with open(original_image_path, 'wb') as f:
+            f.write(response.content)
 
-    # Preprocess the image
-    input_data = model.preprocess(original_image_path)
+        # Preprocess the image
+        input_data = model.preprocess(original_image_path)
 
-    # Run inference
-    inference_output = model.run_inference(input_data)
+        # Run inference
+        inference_output = model.run_inference(input_data)
 
-    # Postprocess the output
-    segmented_image = model.postprocess(inference_output)
+        # Postprocess the output
+        segmented_image = model.postprocess(inference_output)
 
-    # Save the segmented image
-    segmented_image_path = os.path.join('static', 'output', 'segmented.png')
-    segmented_image.save(segmented_image_path)
+        # Save the segmented image
+        segmented_image_path = os.path.join('static', 'output', 'segmented.png')
+        segmented_image.save(segmented_image_path)
 
-    return jsonify({
-        'original_image': original_image_path,
-        'segmented_image': segmented_image_path
-    })
+        return jsonify({
+            'original_image': original_image_path,
+            'segmented_image': segmented_image_path
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

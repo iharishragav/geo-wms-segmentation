@@ -7,11 +7,13 @@
     <title>Geospatial Semantic Segmentation</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
 </head>
 <body>
     <h1>Geospatial Semantic Segmentation</h1>
     <div id="map"></div>
     <button id="segment-btn">Run Segmentation</button>
+    <div id="loader" class="loader" style="display: none;"></div>
     <div id="results">
         <div id="original-image">
             <h2>Original Image</h2>
@@ -24,5 +26,6 @@
     </div>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="/static/js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 </body>
 </html>
